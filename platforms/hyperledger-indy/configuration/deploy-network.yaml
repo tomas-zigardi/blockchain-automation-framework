@@ -70,6 +70,7 @@
       loop_var: organizationItem
     when: network['type'] == 'indy'
 
+
   # Admin K8S auth
   - name: Admin K8S auth
     include_role:
@@ -86,6 +87,7 @@
     loop_control:
       loop_var: organizationItem
     when: network['type'] == 'indy' and {{ organizationItem.vault.root_token }} is defined
+
 
   # Generate indy crypto and insert into Vault
   - name: 'Generate indy crypto and insert into Vault'
