@@ -87,49 +87,49 @@
       loop_var: organizationItem
     when: network['type'] == 'indy' and {{ organizationItem.vault.root_token }} is defined
 
-  # Generate indy crypto and insert into Vault
-  - name: 'Generate indy crypto and insert into Vault'
-    include_role:
-      name: setup/crypto
-    vars:
-      organization: "{{ organizationItem.name | lower }}"
-      component_ns: "{{ organizationItem.name | lower }}-ns"
-      component_name: "{{ organization }}"
-      services: "{{ organizationItem.services }}"
-      kubernetes: "{{ organizationItem.k8s }}"
-      vault: "{{ organizationItem.vault }}"
-      gitops: "{{ organizationItem.gitops }}"
-      vault_ac_token: "{{ ac_vault_tokens[organization] }}"
-    loop: "{{ network['organizations'] }}"
-    loop_control:
-      loop_var: organizationItem
-    when: network['type'] == 'indy'
+  # # Generate indy crypto and insert into Vault
+  # - name: 'Generate indy crypto and insert into Vault'
+  #   include_role:
+  #     name: setup/crypto
+  #   vars:
+  #     organization: "{{ organizationItem.name | lower }}"
+  #     component_ns: "{{ organizationItem.name | lower }}-ns"
+  #     component_name: "{{ organization }}"
+  #     services: "{{ organizationItem.services }}"
+  #     kubernetes: "{{ organizationItem.k8s }}"
+  #     vault: "{{ organizationItem.vault }}"
+  #     gitops: "{{ organizationItem.gitops }}"
+  #     vault_ac_token: "{{ ac_vault_tokens[organization] }}"
+  #   loop: "{{ network['organizations'] }}"
+  #   loop_control:
+  #     loop_var: organizationItem
+  #   when: network['type'] == 'indy'
 
-  # Create and deploy domain genesis
-  - name: 'Create domain genesis'
-    include_role:
-      name: setup/domain_genesis
-    when: network['type'] == 'indy'
+  # # Create and deploy domain genesis
+  # - name: 'Create domain genesis'
+  #   include_role:
+  #     name: setup/domain_genesis
+  #   when: network['type'] == 'indy'
 
-  # Deploy all other nodes
-  - name: 'Deploy nodes'
-    include_role:
-      name: setup/node
-    vars:
-      organization: "{{ organizationItem.name | lower }}"
-      component_ns: "{{ organizationItem.name | lower }}-ns"
-      services: "{{ organizationItem.services }}"
-      kubernetes: "{{ organizationItem.k8s }}"
-      vault: "{{ organizationItem.vault }}"
-      gitops: "{{ organizationItem.gitops }}"
-      poolGenesis: "{{ poolGenesis }}"
-    loop: "{{ network['organizations'] }}"
-    loop_control:
-      loop_var: organizationItem
-    when: network['type'] == 'indy' and organizationItem.type == 'peer'
+  # # Deploy all other nodes
+  # - name: 'Deploy nodes'
+  #   include_role:
+  #     name: setup/node
+  #   vars:
+  #     organization: "{{ organizationItem.name | lower }}"
+  #     component_ns: "{{ organizationItem.name | lower }}-ns"
+  #     services: "{{ organizationItem.services }}"
+  #     kubernetes: "{{ organizationItem.k8s }}"
+  #     vault: "{{ organizationItem.vault }}"
+  #     gitops: "{{ organizationItem.gitops }}"
+  #     poolGenesis: "{{ poolGenesis }}"
+  #   loop: "{{ network['organizations'] }}"
+  #   loop_control:
+  #     loop_var: organizationItem
+  #   when: network['type'] == 'indy' and organizationItem.type == 'peer'
 
-  # delete build directory
-  - name: Remove build directory
-    file:
-      path: "./build"
-      state: absent
+  # # delete build directory
+  # - name: Remove build directory
+  #   file:
+  #     path: "./build"
+  #     state: absent
