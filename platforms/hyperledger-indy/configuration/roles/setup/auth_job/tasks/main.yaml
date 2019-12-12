@@ -21,17 +21,17 @@
 
 # ---------------------------------------------------------------------
 # push the created deployment files to repository
-# - name: "Push the created deployment files to repository"
-#   include_role:
-#     name: "{{ playbook_dir }}/../../shared/configuration/roles/git_push"
-#   vars:
-#     GIT_DIR: "{{ playbook_dir }}/../../../"
-#     GIT_REPO: "{{ gitops.git_push_url }}"
-#     GIT_USERNAME: "{{ gitops.username }}"
-#     GIT_PASSWORD: "{{ gitops.password }}"
-#     GIT_BRANCH: "{{ gitops.branch }}"
-#     GIT_RESET_PATH: "platforms/hyperledger-indy/configuration"
-#     msg: "Pushing deployment files for {{ organization }}"
+- name: "Push the created deployment files to repository"
+  include_role:
+    name: "{{ playbook_dir }}/../../shared/configuration/roles/git_push"
+  vars:
+    GIT_DIR: "{{ playbook_dir }}/../../../"
+    GIT_REPO: "{{ gitops.git_push_url }}"
+    GIT_USERNAME: "{{ gitops.username }}"
+    GIT_PASSWORD: "{{ gitops.password }}"
+    GIT_BRANCH: "{{ gitops.branch }}"
+    GIT_RESET_PATH: "platforms/hyperledger-indy/configuration"
+    msg: "Pushing deployment files for {{ organization }}"
 
 # ---------------------------------------------------------------------
 # check Vault for correct inserted indy crypto
