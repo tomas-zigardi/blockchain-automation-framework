@@ -23,6 +23,12 @@ spec:
             - >
               echo test;
 
+              apk update && apk add curl git;
+
+              curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl;
+
+              chmod u+x kubectl && mv kubectl /bin/kubectl;
+
               KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
               KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
 
@@ -31,5 +37,9 @@ spec:
               echo aaaa;
 
               echo ${KUBE_CERT};
+
+              kubectl version;
+
+              kubectl get pods;
 
               sleep 10000
