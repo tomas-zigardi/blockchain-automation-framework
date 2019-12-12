@@ -16,7 +16,7 @@
   vars:
     component_type: "auth_job"
     component_name: "{{ organization }}"
-    chartName: "auth_job"
+    chartName: "indy-auth-job"
     release_dir: "{{ playbook_dir }}/../../../{{ gitops.release_dir }}"
 
 # ---------------------------------------------------------------------
