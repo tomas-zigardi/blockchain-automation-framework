@@ -6,7 +6,7 @@ metadata:
     flux.weave.works/automated: "false"
   namespace: baf-tomas-zigardi-provider-ns
 spec:
-  releaseName: baf-tomas-zigardi-provider-provider-steward-1
+  releaseName: baf-tomas-zigardi-provider-provider-steward-1-auth
   chart:
     path: platforms/hyperledger-indy/charts/auth_job
     git: ssh://git@github.com/tomas-zigardi/blockchain-automation-framework.git
