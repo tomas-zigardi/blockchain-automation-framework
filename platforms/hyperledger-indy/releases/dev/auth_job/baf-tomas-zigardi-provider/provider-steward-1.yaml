@@ -8,7 +8,7 @@ metadata:
 spec:
   releaseName: baf-tomas-zigardi-provider-provider-steward-1-auth
   chart:
-    path: platforms/hyperledger-indy/charts/auth_job
+    path: platforms/hyperledger-indy/charts/indy-auth-job
     git: ssh://git@github.com/tomas-zigardi/blockchain-automation-framework.git
     ref: development-environment2
   values:
