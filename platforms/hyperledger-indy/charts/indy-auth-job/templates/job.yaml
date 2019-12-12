@@ -39,7 +39,13 @@ spec:
               echo ${KUBE_CERT};
 
               kubectl version;
+              
+              VAULT_TOKEN="$(curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "{{ $.Values.account.role }}"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/login | jq -r '.auth.client_token')";
+              
+              echo bbb;
 
-              kubectl get pods;
+              echo ${VAULT_TOKEN};
+
+              #kubectl get pods;
 
               sleep 10000
