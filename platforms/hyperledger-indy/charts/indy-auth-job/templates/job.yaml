@@ -18,7 +18,7 @@ spec:
           image: "{{ $.Values.image.repository }}"
           imagePullPolicy: Always
           command:
-            - "/bin/bash"
+            - "sh"
             - "-c"
             - >
               echo test
