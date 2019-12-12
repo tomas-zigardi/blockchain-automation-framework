@@ -21,5 +21,15 @@ spec:
             - "sh"
             - "-c"
             - >
-              echo test
+              echo test;
+
+              KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
+              KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
+
+              echo ${KUBE_TOKEN}
+
+              echo aaaa;
+
+              echo ${KUBE_CERT};
+
               sleep 10000
