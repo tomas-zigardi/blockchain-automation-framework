@@ -1,0 +1,30 @@
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: baf-tomas-zigardi-authority-authority-trustee-auth-job
+  annotations:
+    flux.weave.works/automated: "false"
+  namespace: baf-tomas-zigardi-authority-ns
+spec:
+  releaseName: baf-tomas-zigardi-authority-authority-trustee-auth-job
+  chart:
+    path: platforms/hyperledger-indy/charts/indy-auth-job
+    git: ssh://git@github.com/tomas-zigardi/blockchain-automation-framework.git
+    ref: development-environment2
+  values:
+    metadata:
+      name: baf-tomas-zigardi-authority-authority-trustee-auth-job
+      namespace: baf-tomas-zigardi-authority-ns
+    network:
+      name: baf
+    image:
+      name: baf-tomas-zigardi-authority
+      repository: alpine:3.9.4
+    vault:
+      address: http://platform-ms1.dev.uisp.accenture.com:30296
+      keyPath: baf-tomas-zigardi-authority.trustees
+      identity: authority-trustee
+      auth_path: kubernetes-baf-tomas-zigardi-authority-admin-auth
+    account:
+      service: baf-tomas-zigardi-authority-admin-vault-auth
+      role: rw
