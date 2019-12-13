@@ -1,19 +1,19 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: baf-tomas-zigardi-provider-provider-steward-1
+  name: baf-tomas-zigardi-provider-provider-steward-1-auth-job
   annotations:
     flux.weave.works/automated: "false"
   namespace: baf-tomas-zigardi-provider-ns
 spec:
-  releaseName: baf-tomas-zigardi-provider-provider-steward-1-auth
+  releaseName: baf-tomas-zigardi-provider-provider-steward-1-auth-job
   chart:
     path: platforms/hyperledger-indy/charts/indy-auth-job
     git: ssh://git@github.com/tomas-zigardi/blockchain-automation-framework.git
     ref: development-environment2
   values:
     metadata:
-      name: baf-tomas-zigardi-provider-provider-steward-1
+      name: baf-tomas-zigardi-provider-provider-steward-1-auth-job
       namespace: baf-tomas-zigardi-provider-ns
     network:
       name: baf
