@@ -7,8 +7,7 @@ reclaimPolicy: Delete
 volumeBindingMode: Immediate
 parameters:
   encrypted: "true"
-    kmsKeyId: encryption_key_id
   allowedTopologies:
   - matchLabelExpressions:
     - key: failure-domain.beta.kubernetes.io/zone
-      values: availability_zone
+      values: us-east-1f
