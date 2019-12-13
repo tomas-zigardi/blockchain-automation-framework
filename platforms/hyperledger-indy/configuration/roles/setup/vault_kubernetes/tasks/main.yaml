@@ -97,7 +97,7 @@
 # This task creates the vault auth
 - name: Create Vault auth role
   shell: |
-    vault write auth/{{ auth_path }}/role/rw bound_service_account_names={{ organization }}-admin-vault-auth bound_service_account_namespaces={{ component_ns }} policies="{{ organization }}-admin-rw" ttl=120s
+    vault write auth/{{ auth_path }}/role/rw bound_service_account_names={{ organization }}-admin-vault-auth bound_service_account_namespaces={{ component_ns }} policies="{{ organization }}-admin-rw" ttl=24h
   environment:
     VAULT_ADDR: "{{ vault.url }}"
     VAULT_TOKEN: "{{ vault.root_token }}"
