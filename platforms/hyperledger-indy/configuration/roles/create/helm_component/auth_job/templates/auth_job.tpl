@@ -1,19 +1,19 @@
 apiVersion: flux.weave.works/v1beta1
 kind: HelmRelease
 metadata:
-  name: {{ component_name }}-{{ identity_name }}
+  name: {{ component_name }}-{{ identity_name }}-auth-job
   annotations:
     flux.weave.works/automated: "false"
   namespace: {{ component_ns }}
 spec:
-  releaseName: {{ component_name }}-{{ identity_name }}-auth
+  releaseName: {{ component_name }}-{{ identity_name }}-auth-job
   chart:
     path: {{ gitops.chart_source }}/{{ chart }}
     git: {{ gitops.git_ssh }}
     ref: {{ gitops.branch }}
   values:
     metadata:
-      name: {{ component_name }}-{{ identity_name }}
+      name: {{ component_name }}-{{ identity_name }}-auth-job
       namespace: {{ component_ns }}
     network:
       name: {{ network.name }}
