@@ -27,4 +27,4 @@ account:
   service:
   # vault-auth-provider-agent-app
   role:
-  # ro
+  # rw
