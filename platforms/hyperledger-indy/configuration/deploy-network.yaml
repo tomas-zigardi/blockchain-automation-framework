@@ -70,8 +70,7 @@
     loop: "{{ network['organizations'] }}"
     loop_control:
       loop_var: organizationItem
-    when: network['type'] == 'indy'
-    #when: network['type'] == 'indy' and {{ organizationItem.vault.root_token }} is defined
+    when: network['type'] == 'indy' and {{ organizationItem.vault.root_token }} is defined
 
   # Generate auth job
   - name: 'Generate auth job'
@@ -88,7 +87,7 @@
     loop: "{{ network['organizations'] }}"
     loop_control:
       loop_var: organizationItem
-    when: network['type'] == 'indy' and "{{ organizationItem.vault.root_token }}" is defined
+    when: network['type'] == 'indy'
 
 
   # # Get Vault AC Token via Service Account
