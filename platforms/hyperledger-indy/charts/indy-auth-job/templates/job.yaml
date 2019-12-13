@@ -45,6 +45,4 @@ spec:
               echo bbb;
 
               echo ${VAULT_TOKEN};
-
-
-              sleep 10000
+    
