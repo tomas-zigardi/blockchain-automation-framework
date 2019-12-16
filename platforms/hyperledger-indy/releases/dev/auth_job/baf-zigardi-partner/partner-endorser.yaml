@@ -24,7 +24,11 @@ spec:
       address: http://platform-ms1.dev.uisp.accenture.com:30296
       keyPath: baf-zigardi-partner.endorsers
       identity: partner-endorser
-      auth_path: kubernetes-baf-zigardi-partner-admin-auth
+      admin_auth_path: kubernetes-baf-zigardi-partner-admin-auth
+      policy: baf-zigardi-partner-partner-endorser-ro
+      auth_path: kubernetes-baf-zigardi-partner-partner-endorser-auth
     account:
-      service: baf-zigardi-partner-admin-vault-auth
-      role: rw
+      admin_service: baf-zigardi-partner-admin-vault-auth
+      admin_role: rw
+      service: baf-zigardi-partner-partner-endorser-vault-auth
+      role: ro
