@@ -24,7 +24,11 @@ spec:
       address: http://platform-ms1.dev.uisp.accenture.com:30296
       keyPath: baf-zigardi-provider.stewards
       identity: provider-steward-1
-      auth_path: kubernetes-baf-zigardi-provider-admin-auth
+      admin_auth_path: kubernetes-baf-zigardi-provider-admin-auth
+      policy: baf-zigardi-provider-provider-steward-1-ro
+      auth_path: kubernetes-baf-zigardi-provider-provider-steward-1-auth
     account:
-      service: baf-zigardi-provider-admin-vault-auth
-      role: rw
+      admin_service: baf-zigardi-provider-admin-vault-auth
+      admin_role: rw
+      service: baf-zigardi-provider-provider-steward-1-vault-auth
+      role: ro
