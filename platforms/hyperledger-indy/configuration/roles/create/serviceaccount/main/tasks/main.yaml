@@ -8,7 +8,7 @@
     name: create/serviceaccount/by_identities
   vars:
     component_namespace: "{{ component_ns }}"
-    component_name: "{{ trusteeItem.name }}-vault-auth"
+    component_name: "{{ organization }}-{{ trusteeItem.name }}-vault-auth"
     release_dir: "{{ playbook_dir }}/../../../{{ gitops.release_dir }}/{{ organization }}"
   loop: "{{ services.trustees }}"
   loop_control:
@@ -21,7 +21,7 @@
     name: create/serviceaccount/by_identities
   vars:
     component_namespace: "{{ component_ns }}"
-    component_name: "{{ stewardItem.name }}-vault-auth"
+    component_name: "{{ organization }}-{{ stewardItem.name }}-vault-auth"
     release_dir: "{{ playbook_dir }}/../../../{{ gitops.release_dir }}/{{ organization }}"
   loop: "{{ services.stewards }}"
   loop_control:
@@ -34,7 +34,7 @@
     name: create/serviceaccount/by_identities
   vars:
     component_namespace: "{{ component_ns }}"
-    component_name: "{{ endorserItem.name }}-vault-auth"
+    component_name: "{{ organization }}-{{ endorserItem.name }}-vault-auth"
     release_dir: "{{ playbook_dir }}/../../../{{ gitops.release_dir }}/{{ organization }}"
   loop: "{{ services.endorsers }}"
   loop_control:
