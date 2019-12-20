@@ -20,7 +20,16 @@
     component_type_name: "{{ component_name }}"
   when: serviceaccount_state.resources|length == 0
 
-# Get component_name to var
+# Check cluster role binding
+- name : Check cluster role binding for {{ component_name }}
+  k8s_facts:
+    kind: ClusterRoleBinding
+    name: "{{ component_name }}"
+    namespace: "{{ component_namespace }}"
+    kubeconfig: "{{ kubernetes.config_file }}"
+  register: clusterrolebinding_state
+  
+  # Get component_name to var
 - name: Get component_name to var
   shell: echo {{ component_name }}
   register: component_name_var
@@ -32,15 +41,6 @@
   register: organization_admin_var
   when: serviceaccount_state.resources|length == 0
 
-# Check cluster role binding
-- name : Check cluster role binding for {{ component_name }}
-  k8s_facts:
-    kind: ClusterRoleBinding
-    name: "{{ component_name }}"
-    namespace: "{{ component_namespace }}"
-    kubeconfig: "{{ kubernetes.config_file }}"
-  register: clusterrolebinding_state
-  
 # Create cluster role binding
 - name: Create cluster role binding for {{ component_name }}
   include_role:
