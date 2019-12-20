@@ -34,7 +34,7 @@
   register: component_name_var
     
 - name: get organization to var
-  shell: echo {{ organization }}
+  shell: echo {{ organization }}-admin-vault-auth
   register: organization_var
   
 # Create cluster role binding
