@@ -26,6 +26,7 @@ spec:
       identity: partner-steward-2
       admin_auth_path: kubernetes-baf-zigardi-partner-admin-auth
       policy: baf-zigardi-partner-partner-steward-2-ro
+      policy_content: "/kv/baf-zigardi-partner/steward/partner-steward-2/*" { [ "read", "list" ] }
       auth_path: kubernetes-baf-zigardi-partner-partner-steward-2-auth
     account:
       admin_service: baf-zigardi-partner-admin-vault-auth
