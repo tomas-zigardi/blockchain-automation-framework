@@ -33,7 +33,7 @@
   vars:
     component_type: "{{ 'admin-cluster-role-binding' if '{{ component_name }}' == '{{ organization }}-admin-vault-auth' else 'cluster-role-binding' }}"
     component_type_name: "{{ component_name }}"
-    msg: debug {{ component_name }} debug {{ component_type }}
+  msg: debug {{ component_name }} debug {{ component_type }}
 
 # Create cluster role binding
 - name: Create cluster role binding for {{ component_name }}
