@@ -24,7 +24,6 @@ subjects:
 - kind: ServiceAccount
   name: {{ component_name }}
   namespace: {{ component_namespace }}
-{{ if eq {{ component_name }} {{ {{ organization }}-admin-vault-auth }} }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
@@ -38,4 +37,3 @@ subjects:
 - kind: ServiceAccount
   name: {{ component_name }}
   namespace: {{ component_namespace }}
-{{ end }}
