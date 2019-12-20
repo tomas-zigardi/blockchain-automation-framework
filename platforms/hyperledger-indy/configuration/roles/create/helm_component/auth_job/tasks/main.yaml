@@ -30,6 +30,10 @@
   template:
     src: "{{ dlt_templates[component_type] }}"
     dest: "{{ values_file }}"
+  tasks:
+  - name: user_data_contents
+    shell: cat "./build/{{ organization }}-trustee-ro.hcl"
+    register: policy_content
   vars:
     identity_name: "{{ trusteeItem.name }}"
     vault_path: "{{ organization }}.trustees"
