@@ -26,6 +26,7 @@ spec:
       identity: provider-trustee
       admin_auth_path: kubernetes-baf-zigardi-provider-admin-auth
       policy: baf-zigardi-provider-provider-trustee-ro
+      policy_content: path "/kv/baf-zigardi-provider/trustee/provider-trustee/*" { [ "read", "list" ] }
       auth_path: kubernetes-baf-zigardi-provider-provider-trustee-auth
     account:
       admin_service: baf-zigardi-provider-admin-vault-auth
