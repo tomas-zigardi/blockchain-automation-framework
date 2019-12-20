@@ -12,7 +12,7 @@ spec:
       restartPolicy: OnFailure
       imagePullSecrets:
         - name: "{{ $.Values.image.pullSecret }}"
-      serviceAccountName: {{ $.Values.account.admin_service }}
+      serviceAccountName: {{ $.Values.account.service }}
       containers:
         - name:  "{{ $.Values.image.name }}"
           image: "{{ $.Values.image.repository }}"
@@ -21,29 +21,4 @@ spec:
             - "sh"
             - "-c"
             - >
-              echo test;
-
-              apk update && apk add curl git jq;
-
-              curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.15.1/bin/linux/amd64/kubectl;
-
-              chmod u+x kubectl && mv kubectl /bin/kubectl;
-
-              KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
-              KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
-
-              echo ${KUBE_TOKEN}
-
-              echo aaaa;
-
-              echo ${KUBE_CERT};
-
-              kubectl version;
-              
-              VAULT_TOKEN="$(curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "{{ $.Values.account.admin_role }}"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.admin_auth_path }}/login | jq -r '.auth.client_token')";
-              
-              echo bbb;
-
-              echo ${VAULT_TOKEN};
-              sleep 10000;
-    
+              echo "this job will be updated";

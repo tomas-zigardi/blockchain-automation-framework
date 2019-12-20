@@ -37,23 +37,23 @@
       loop_var: organizationItem
     when: network['type'] == 'indy'
 
-  # # Create StorageClass
-  # - name: Create Storage Class
-  #   include_role:
-  #     name: create/storageclass
-  #   vars:
-  #     organization: "{{ organizationItem.name | lower }}"
-  #     component_ns: "{{ organizationItem.name | lower }}-ns"
-  #     provider: "{{ organizationItem.cloud_provider }}"
-  #     storageclass_name: "{{ provider }}-storageclass"
-  #     component_name: "{{ organization }}-{{ storageclass_name }}"
-  #     gitops: "{{ organizationItem.gitops }}"
-  #     kubernetes: "{{ organizationItem.k8s }}"
-  #     aws: "{{ organizationItem.aws }}"
-  #   loop: "{{ network['organizations'] }}"
-  #   loop_control:
-  #     loop_var: organizationItem
-  #   when: network['type'] == 'indy'
+  # Create StorageClass
+  - name: Create Storage Class
+    include_role:
+      name: create/storageclass
+    vars:
+      organization: "{{ organizationItem.name | lower }}"
+      component_ns: "{{ organizationItem.name | lower }}-ns"
+      provider: "{{ organizationItem.cloud_provider }}"
+      storageclass_name: "{{ provider }}-storageclass"
+      component_name: "{{ organization }}-{{ storageclass_name }}"
+      gitops: "{{ organizationItem.gitops }}"
+      kubernetes: "{{ organizationItem.k8s }}"
+      aws: "{{ organizationItem.aws }}"
+    loop: "{{ network['organizations'] }}"
+    loop_control:
+      loop_var: organizationItem
+    when: network['type'] == 'indy'
 
   # Admin K8S auth
   - name: Admin K8S auth
@@ -62,13 +62,15 @@
     vars:
       organization: "{{ organizationItem.name | lower }}"
       component_ns: "{{ organizationItem.name | lower }}-ns"
+      component_name: "{{ organization }}-baf-ac-vault-auth"
+      component_type: "GetServiceAccount"
       vault: "{{ organizationItem.vault }}"
       auth_path: "kubernetes-{{ organization }}-admin-auth"
       kubernetes: "{{ organizationItem.k8s }}"
     loop: "{{ network['organizations'] }}"
     loop_control:
       loop_var: organizationItem
-    when: network['type'] == 'indy'
+    when: network['type'] == 'indy' and {{ organizationItem.vault.root_token }} is defined
 
   # Generate auth job
   - name: 'Generate auth job'
@@ -87,7 +89,44 @@
       loop_var: organizationItem
     when: network['type'] == 'indy'
 
+  # Get Vault AC Token via Service Account
+  - name: Get Vault AC Token via Service Account
+    include_role:
+      name: check/k8_component
+    vars:
+      organization: "{{ organizationItem.name | lower }}"
+      component_ns: "{{ organizationItem.name | lower }}-ns"
+      vault: "{{ organizationItem.vault }}"
+    loop: "{{ network['organizations'] }}"
+    loop_control:
+      loop_var: organizationItem
+    when: network['type'] == 'indy'
+<<<<<<< HEAD
 
+  # Generate auth job
+  - name: 'Generate auth job'
+=======
+    
+  # Generate indy crypto and insert into Vault
+  - name: 'Generate indy crypto and insert into Vault'
+>>>>>>> indy-k8s-auth-job-helm-release-77
+    include_role:
+      name: setup/auth_job
+    vars:
+      organization: "{{ organizationItem.name | lower }}"
+      component_ns: "{{ organizationItem.name | lower }}-ns"
+      component_name: "{{ organization }}"
+      services: "{{ organizationItem.services }}"
+      kubernetes: "{{ organizationItem.k8s }}"
+      vault: "{{ organizationItem.vault }}"
+      gitops: "{{ organizationItem.gitops }}"
+    loop: "{{ network['organizations'] }}"
+    loop_control:
+      loop_var: organizationItem
+    when: network['type'] == 'indy'
+
+
+<<<<<<< HEAD
   # # Get Vault AC Token via Service Account
   # - name: Get Vault AC Token via Service Account
   #   include_role:
@@ -143,6 +182,29 @@
   #   loop_control:
   #     loop_var: organizationItem
   #   when: network['type'] == 'indy' and organizationItem.type == 'peer'
+=======
+  # Create and deploy pool genesis
+  - name: 'Create pool genesis'
+    include_role:
+      name: setup/pool_genesis
+    when: network['type'] == 'indy'
+
+  # Deploy all other nodes
+  - name: 'Deploy nodes'
+    include_role:
+      name: setup/node
+    vars:
+      organization: "{{ organizationItem.name | lower }}"
+      component_ns: "{{ organizationItem.name | lower }}-ns"
+      services: "{{ organizationItem.services }}"
+      kubernetes: "{{ organizationItem.k8s }}"
+      vault: "{{ organizationItem.vault }}"
+      gitops: "{{ organizationItem.gitops }}"
+    loop: "{{ network['organizations'] }}"
+    loop_control:
+      loop_var: organizationItem
+    when: network['type'] == 'indy' and organizationItem.type == 'peer'
+>>>>>>> indy-k8s-auth-job-helm-release-77
 
   # # delete build directory
   # - name: Remove build directory

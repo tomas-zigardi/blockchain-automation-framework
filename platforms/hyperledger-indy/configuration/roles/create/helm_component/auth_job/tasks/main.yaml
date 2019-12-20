@@ -2,7 +2,6 @@
 # This role creates the job value file for stewards
 ##############################################################################################
 
----
 ##############################################################################################
 # This tasks ensures the directory of auth job existance, if not exits it creates a new one
 - name: Ensures {{ release_dir }}/{{ component_type }}/{{ component_name }} dir exists

@@ -20,13 +20,17 @@
     component_type_name: "{{ component_name }}"
   when: serviceaccount_state.resources|length == 0
 
-- name: get component_name to var
+# Get component_name to var
+- name: Get component_name to var
   shell: echo {{ component_name }}
   register: component_name_var
-    
-- name: get organization and admin string to var
+  when: serviceaccount_state.resources|length == 0
+
+# Get organization and admin string to var
+- name: Get organization and admin string to var
   shell: echo {{ organization }}-admin-vault-auth
   register: organization_admin_var
+  when: serviceaccount_state.resources|length == 0
 
 # Check cluster role binding
 - name : Check cluster role binding for {{ component_name }}
