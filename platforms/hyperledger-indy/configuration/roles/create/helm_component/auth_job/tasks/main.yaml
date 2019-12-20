@@ -11,6 +11,16 @@
     recurse: yes
     state: directory
 
+#####################################################################################################################
+# This task creates the access policy for trustees
+- name: Create access policy for trustees
+  vars:
+    identity_name: "{{ trusteeItem.name }}"
+  template:
+    src: "trustee-ro.tpl"
+    dest: "./build/{{ organization }}-trustee-ro.hcl"
+  when: services.trustees is defined  # Run if policy check failed
+
 ##############################################################################################
 # Generate vault policy and role for trustee
 - name: Trustee vault policy and role generating
@@ -26,6 +36,16 @@
   loop_control:
     loop_var: trusteeItem
   when: services.trustees is defined
+
+#####################################################################################################################
+# This task creates the access policy for stewards
+- name: Create policy access policy for stewards
+  vars:
+    identity_name: "{{ stewardItem.name }}"
+  template:
+    src: "steward-ro.tpl"
+    dest: "./build/{{ organization }}-steward-ro.hcl"
+  when: services.stewards is defined  # Run if policy check failed
 
 ##############################################################################################
 # Generate Indy vault policy and role for stewards
@@ -43,6 +63,16 @@
     loop_var: stewardItem
   when: services.stewards is defined
 
+#####################################################################################################################
+# This task creates the access policy for endorser
+- name: Create access policy for endorsers
+  vars:
+    identity_name: "{{ endorserItem.name }}"
+  template:
+    src: "endorser-ro.tpl"
+    dest: "./build/{{ organization }}-endorser-ro.hcl"
+  when: services.endorsers is defined  # Run if policy check failed
+
 ##############################################################################################
 # Generate Indy vault policy and role for endorser
 - name: Endorser vault policy and role generating
@@ -58,6 +88,15 @@
   loop_control:
     loop_var: endorserItem
   when: services.endorsers is defined
+
+#####################################################################################################################
+# This task creates the access policy for baf-ac
+- name: Create access policy for baf-ac
+  vars:
+    identity_name: "baf-ac"
+  template:
+    src: "baf-ac-ro.tpl"
+    dest: "./build/{{ organization }}-baf-ac-ro.hcl"
 
 ##############################################################################################
 # Generate Indy vault policy and role for baf-ac
