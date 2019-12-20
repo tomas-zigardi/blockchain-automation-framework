@@ -29,18 +29,20 @@
     kubeconfig: "{{ kubernetes.config_file }}"
   register: clusterrolebinding_state
 
-- name: Display all variables/facts known for a host
+- name: Display component_name
   debug:
     msg: debug {{ component_name }} debug
-
+    
+- name: Display organization
+  debug:
+    msg: debug {{ organization }} debug
+  
 # Create cluster role binding
 - name: Create cluster role binding for {{ component_name }}
   include_role:
     name: create/k8_component
-  set_fact:
-      org: "{{ organization }}"
-      name: "{{ component_name }}"
   vars:
-    component_type: "{{ 'admin-cluster-role-binding' if name == org-admin-vault-auth else 'cluster-role-binding' }}"
+    mycondition: "{{ component_name }}" == "{{ organization }}-admin-vault-auth"
+    component_type: "{{ 'admin-cluster-role-binding' if {{ mycondition }} else 'cluster-role-binding' }}"
     component_type_name: "{{ component_name }}"
   when: clusterrolebinding_state.resources|length == 0
