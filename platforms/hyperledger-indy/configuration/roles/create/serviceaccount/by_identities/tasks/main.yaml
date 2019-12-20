@@ -31,8 +31,6 @@
 
 - name: Display all variables/facts known for a host
   debug:
-    var:
-      component_type_name: "{{ component_name }}"
     msg: debug {{ component_name }} debug
 
 # Create cluster role binding
