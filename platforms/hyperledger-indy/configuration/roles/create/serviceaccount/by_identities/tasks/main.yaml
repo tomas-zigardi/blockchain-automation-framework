@@ -31,7 +31,7 @@
 
 - name: Display all variables/facts known for a host
   debug:
-    vars:
+    var:
       component_type_name: "{{ component_name }}"
     msg: debug {{ component_name }} debug
 
