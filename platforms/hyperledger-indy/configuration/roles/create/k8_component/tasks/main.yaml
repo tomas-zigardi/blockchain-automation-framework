@@ -11,11 +11,6 @@
     recurse: yes
     state: directory
 
-- name: type
-  debug:
-    msg: debug {{ component_type }} debug
-
-
 ############################################################################################
 # This task creates the value file for the k8 components
 - name: "create {{ component_type }} file for {{ component_type_name }}"
