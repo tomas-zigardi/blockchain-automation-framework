@@ -33,13 +33,13 @@
 - name: Get component_name to var
   shell: echo {{ component_name }}
   register: component_name_var
-  when: serviceaccount_state.resources|length == 0
+  when: clusterrolebinding_state.resources|length == 0
 
 # Get organization and admin string to var
 - name: Get organization and admin string to var
   shell: echo {{ organization }}-admin-vault-auth
   register: organization_admin_var
-  when: serviceaccount_state.resources|length == 0
+  when: clusterrolebinding_state.resources|length == 0
 
 # Create cluster role binding
 - name: Create cluster role binding for {{ component_name }}
