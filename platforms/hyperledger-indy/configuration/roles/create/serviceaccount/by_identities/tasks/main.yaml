@@ -37,7 +37,10 @@
 - name: Create cluster role binding for {{ component_name }}
   include_role:
     name: create/k8_component
+  set_fact:
+      org: "{{ organization }}"
+      name: "{{ component_name }}"
   vars:
-    component_type: "{{ 'admin-cluster-role-binding' if {{ component_name }} == {{ organization }}-admin-vault-auth else 'cluster-role-binding' }}"
+    component_type: "{{ 'admin-cluster-role-binding' if name == org-admin-vault-auth else 'cluster-role-binding' }}"
     component_type_name: "{{ component_name }}"
   when: clusterrolebinding_state.resources|length == 0
