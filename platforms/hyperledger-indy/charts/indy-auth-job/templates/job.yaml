@@ -40,7 +40,7 @@ spec:
 
               kubectl version;
               
-              VAULT_TOKEN="$(curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "{{ $.Values.account.role }}"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/login | jq -r '.auth.client_token')";
+              VAULT_TOKEN="$(curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "{{ $.Values.account.admin_role }}"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.admin_auth_path }}/login | jq -r '.auth.client_token')";
               
               echo bbb;
 
