@@ -11,19 +11,6 @@
     recurse: yes
     state: directory
 
-# #####################################################################################################################
-# # This task creates the access policy for trustees
-# - name: Create access policy for trustees
-#   vars:
-#     identity_name: "{{ trusteeItem.name }}"
-#   template:
-#     src: "trustee-ro.tpl"
-#     dest: "./build/{{ organization }}-{{ trusteeItem.name }}-ro.hcl"
-#   loop: "{{ services.trustees }}"
-#   loop_control:
-#     loop_var: trusteeItem
-#   when: services.trustees is defined
-
 ##############################################################################################
 # Generate vault policy and role for trustee
 - name: Trustee vault policy and role generating
@@ -42,19 +29,6 @@
     loop_var: trusteeItem
   when: services.trustees is defined
 
-# #####################################################################################################################
-# # This task creates the access policy for stewards
-# - name: Create policy access policy for stewards
-#   vars:
-#     identity_name: "{{ stewardItem.name }}"
-#   template:
-#     src: "steward-ro.tpl"
-#     dest: "./build/{{ organization }}-steward-ro.hcl"
-#   loop: "{{ services.stewards }}"
-#   loop_control:
-#     loop_var: stewardItem
-#   when: services.stewards is defined
-
 ##############################################################################################
 # Generate Indy vault policy and role for stewards
 - name: Stewards vault policy and role generating
@@ -66,25 +40,12 @@
     vault_path: "{{ organization }}.stewards"
     values_file: "{{ release_dir }}/{{ component_type }}/{{ component_name }}/{{ identity_name }}.yaml"
     chart: "{{ chartName }}"
-    policy_path: "\"/kv/{{ organization }}/steward/{{ identity_name }}/*\""
+    policy_path: "path \"/kv/{{ organization }}/steward/{{ identity_name }}/*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
   loop: "{{ services.stewards }}"
   loop_control:
     loop_var: stewardItem
   when: services.stewards is defined
-
-# #####################################################################################################################
-# # This task creates the access policy for endorser
-# - name: Create access policy for endorsers
-#   vars:
-#     identity_name: "{{ endorserItem.name }}"
-#   template:
-#     src: "endorser-ro.tpl"
-#     dest: "./build/{{ organization }}-endorser-ro.hcl"
-#   loop: "{{ services.endorsers }}"
-#   loop_control:
-#     loop_var: endorserItem
-#   when: services.endorsers is defined
 
 ##############################################################################################
 # Generate Indy vault policy and role for endorser
@@ -97,21 +58,12 @@
     vault_path: "{{ organization }}.endorsers"
     values_file: "{{ release_dir }}/{{ component_type }}/{{ component_name }}/{{ identity_name }}.yaml"
     chart: "{{ chartName }}"
-    policy_path: "\"/kv/{{ organization }}/endorser/{{ identity_name }}/*\""
+    policy_path: "path \"/kv/{{ organization }}/endorser/{{ identity_name }}/*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
   loop: "{{ services.endorsers }}"
   loop_control:
     loop_var: endorserItem
   when: services.endorsers is defined
-
-# #####################################################################################################################
-# # This task creates the access policy for baf-ac
-# - name: Create access policy for baf-ac
-#   vars:
-#     identity_name: "baf-ac"
-#   template:
-#     src: "baf-ac-ro.tpl"
-#     dest: "./build/{{ organization }}-baf-ac-ro.hcl"
 
 ##############################################################################################
 # Generate Indy vault policy and role for baf-ac
@@ -124,5 +76,5 @@
     vault_path: "{{ organization }}.baf-ac"
     values_file: "{{ release_dir }}/{{ component_type }}/{{ component_name }}/{{ identity_name }}.yaml"
     chart: "{{ chartName }}"
-    policy_path: "\"/kv/{{ organization }}/baf-ac/+/+/+/public*\""
+    policy_path: "path \"/kv/{{ organization }}/baf-ac/+/+/+/public*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
