@@ -51,7 +51,7 @@
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/stewards/{{ identity_name }}/*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
-    kubernetes_server: kubernetes_server_url.stdout
+    kubernetes_server: "{{ kubernetes_server_url.stdout }}"
   loop: "{{ services.stewards }}"
   loop_control:
     loop_var: stewardItem
@@ -70,7 +70,7 @@
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/endorsers/{{ identity_name }}/*\""
     policy_capabilities: "{ capabilities = [ \"read\", \"list\" ] }"
-    kubernetes_server: kubernetes_server_url.stdout
+    kubernetes_server: "{{ kubernetes_server_url.stdout }}"
   loop: "{{ services.endorsers }}"
   loop_control:
     loop_var: endorserItem
@@ -89,4 +89,4 @@
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/+/+/+/public*\""
     policy_capabilities: "{ capabilities = [ \"read\", \"list\" ] }"
-    kubernetes_server: kubernetes_server_url.stdout
+    kubernetes_server: "{{ kubernetes_server_url.stdout }}"
