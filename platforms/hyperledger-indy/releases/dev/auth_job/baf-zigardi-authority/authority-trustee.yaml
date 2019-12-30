@@ -27,7 +27,7 @@ spec:
       identity: authority-trustee
       admin_auth_path: kubernetes-baf-zigardi-authority-admin-auth
       policy: baf-zigardi-authority-authority-trustee-ro
-      policy_content: path \"/kv/baf-zigardi-authority/trustees/authority-trustee/*\" [ \"read\", \"list\" ]
+      policy_content: path \"/kv/baf-zigardi-authority/trustees/authority-trustee/*\" { capabilities = [ \"read\", \"list\" ] }
       auth_path: kubernetes-baf-zigardi-authority-authority-trustee-auth
     account:
       admin_service: baf-zigardi-authority-admin-vault-auth
