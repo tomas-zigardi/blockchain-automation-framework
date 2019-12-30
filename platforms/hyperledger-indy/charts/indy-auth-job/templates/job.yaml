@@ -38,7 +38,6 @@ spec:
                };
 
               echo 1;
-              sleep 10000;
               export KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
               export KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
               
@@ -71,7 +70,7 @@ spec:
               validateVaultResponse ${response_status};
               
               echo 8;
-              
+
               # Check 
               response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
 
