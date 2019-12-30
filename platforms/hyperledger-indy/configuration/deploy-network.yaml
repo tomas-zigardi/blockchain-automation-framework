@@ -55,6 +55,23 @@
   #     loop_var: organizationItem
   #   when: network['type'] == 'indy'
 
+  # Admin K8S auth
+  - name: Admin K8S auth
+    include_role:
+      name: setup/vault_kubernetes
+    vars:
+      organization: "{{ organizationItem.name | lower }}"
+      component_ns: "{{ organizationItem.name | lower }}-ns"
+      component_name: "{{ organization }}-baf-ac-vault-auth"
+      component_type: "GetServiceAccount"
+      vault: "{{ organizationItem.vault }}"
+      auth_path: "kubernetes-{{ organization }}-admin-auth"
+      kubernetes: "{{ organizationItem.k8s }}"
+    loop: "{{ network['organizations'] }}"
+    loop_control:
+      loop_var: organizationItem
+    when: network['type'] == 'indy'
+    
   # Generate auth job
   - name: 'Generate auth job'
     include_role:
@@ -82,23 +99,6 @@
       component_name: "{{ organization }}-baf-ac-vault-auth"
       component_type: "GetServiceAccount"
       vault: "{{ organizationItem.vault }}"
-    loop: "{{ network['organizations'] }}"
-    loop_control:
-      loop_var: organizationItem
-    when: network['type'] == 'indy'
-
-  # Generate auth job
-  - name: 'Generate auth job'
-    include_role:
-      name: setup/auth_job
-    vars:
-      organization: "{{ organizationItem.name | lower }}"
-      component_ns: "{{ organizationItem.name | lower }}-ns"
-      component_name: "{{ organization }}"
-      services: "{{ organizationItem.services }}"
-      kubernetes: "{{ organizationItem.k8s }}"
-      vault: "{{ organizationItem.vault }}"
-      gitops: "{{ organizationItem.gitops }}"
     loop: "{{ network['organizations'] }}"
     loop_control:
       loop_var: organizationItem
