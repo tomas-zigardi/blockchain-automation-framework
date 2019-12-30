@@ -39,7 +39,7 @@ spec:
 
               echo 1;
 
-              sleep 20000;
+              #sleep 20000;
 
               export KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
               export KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
@@ -58,11 +58,14 @@ spec:
               
               echo 4;
               
-              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }});
+
+              curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }}
+
+              #response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }});
               
               echo 5;
 
-              validateVaultResponse ${response_status};
+              #validateVaultResponse ${response_status};
               
               echo 6;
 
