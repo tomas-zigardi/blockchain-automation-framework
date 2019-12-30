@@ -38,7 +38,7 @@ spec:
                };
 
               echo 1;
-              
+              sleep 10000;
               export KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
               export KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
               
