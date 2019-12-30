@@ -58,23 +58,19 @@ spec:
               
               echo 4;
               
-              sleep 5;
 
-              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }});
+              curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }};
               
               echo 5;
-              sleep 5;
-              validateVaultResponse ${response_status};
+              #validateVaultResponse ${response_status};
               
               echo 6;
 
-              sleep 5;
 
-              response_status=$(curl  -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"kubernetes_host": "{{ $.Values.network.kubernetes_url }}", "kubernetes_ca_cert": "'"$SA_CA_CRT_ONELINE"'", "token_reviewer_jwt": "'"$SA_JWT_TOKEN"'"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
+              curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"kubernetes_host": "{{ $.Values.network.kubernetes_url }}", "kubernetes_ca_cert": "'"$SA_CA_CRT_ONELINE"'", "token_reviewer_jwt": "'"$SA_JWT_TOKEN"'"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config;
 
               echo 7;
-              sleep 5;
-              validateVaultResponse ${response_status};
+              #validateVaultResponse ${response_status};
               
               echo 8;
 
@@ -90,11 +86,11 @@ spec:
               
               echo 10;
               
-              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request PUT --data '{"policy": "{{ $.Values.vault.policy_content }}"}' {{ $.Values.vault.address }}/v1/sys/policy/{{ $.Values.vault.policy }});
+              curl  --header "X-Vault-Token: $VAULT_TOKEN" --request PUT --data '{"policy": "{{ $.Values.vault.policy_content }}"}' {{ $.Values.vault.address }}/v1/sys/policy/{{ $.Values.vault.policy }};
               
               echo 11;
 
-              validateVaultResponse ${response_status};
+              #validateVaultResponse ${response_status};
               
               echo 12;
 
@@ -110,11 +106,11 @@ spec:
 
               echo 14;
             
-              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"bound_service_account_names": "{{ $.Values.account.service }}","bound_service_account_namespaces": "{{ $.Values.metadata.namespace }}","policies": ["{{ $.Values.vault.policy }}"], "ttl": 180}' {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/role/{{ $.Values.account.role }});
+              curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"bound_service_account_names": "{{ $.Values.account.service }}","bound_service_account_namespaces": "{{ $.Values.metadata.namespace }}","policies": ["{{ $.Values.vault.policy }}"], "ttl": 180}' {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/role/{{ $.Values.account.role }};
 
               echo 15;
               
-              validateVaultResponse ${response_status};
+              #validateVaultResponse ${response_status};
 
               echo 16;
 

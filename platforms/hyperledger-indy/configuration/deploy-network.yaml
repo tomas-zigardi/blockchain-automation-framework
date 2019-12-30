@@ -21,21 +21,21 @@
       loop_var: organizationItem
     when: network['type'] == 'indy'
 
-  # Create service accounts
-  - name: 'Create service accounts'
-    include_role:
-      name: create/serviceaccount/main
-    vars:
-      component_ns: "{{ organizationItem.name | lower }}-ns"
-      organization: "{{ organizationItem.name | lower }}"
-      component_type_name: "{{ organization }}"
-      services: "{{ organizationItem.services }}"
-      gitops: "{{ organizationItem.gitops }}"
-      kubernetes: "{{ organizationItem.k8s }}"
-    loop: "{{ network['organizations'] }}"
-    loop_control:
-      loop_var: organizationItem
-    when: network['type'] == 'indy'
+  # # Create service accounts
+  # - name: 'Create service accounts'
+  #   include_role:
+  #     name: create/serviceaccount/main
+  #   vars:
+  #     component_ns: "{{ organizationItem.name | lower }}-ns"
+  #     organization: "{{ organizationItem.name | lower }}"
+  #     component_type_name: "{{ organization }}"
+  #     services: "{{ organizationItem.services }}"
+  #     gitops: "{{ organizationItem.gitops }}"
+  #     kubernetes: "{{ organizationItem.k8s }}"
+  #   loop: "{{ network['organizations'] }}"
+  #   loop_control:
+  #     loop_var: organizationItem
+  #   when: network['type'] == 'indy'
 
   # # Create StorageClass
   # - name: Create Storage Class
