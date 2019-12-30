@@ -64,16 +64,18 @@ spec:
               
               echo 6;
 
-              # Check 
-              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
-
+              
+              response_status=$(curl  -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"kubernetes_host": "{{ $.Values.network.kubernetes_url }}", "kubernetes_ca_cert": "'"$SA_CA_CRT_ONELINE"'", "token_reviewer_jwt": "'"$SA_JWT_TOKEN"'"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
               echo 7;
 
               validateVaultResponse ${response_status};
               
               echo 8;
               
-              response_status=$(curl  -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"kubernetes_host": "{{ $.Values.network.kubernetes_url }}", "kubernetes_ca_cert": "'"$SA_CA_CRT_ONELINE"'", "token_reviewer_jwt": "'"$SA_JWT_TOKEN"'"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
+              # Check 
+              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
+
+
               
               echo 9;
 

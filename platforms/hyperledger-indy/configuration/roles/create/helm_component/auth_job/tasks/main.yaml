@@ -88,5 +88,5 @@
     values_file: "{{ release_dir }}/{{ component_type }}/{{ component_name }}/{{ identity_name }}.yaml"
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/+/+/+/public*\""
-    policy_capabilities: "{ capabilities = [ \"read\", \"list\" ] }"
+    policy_capabilities: "{ capabilities = [ \\\"read\\\", \\\"list\\\" ] }"
     kubernetes_server: "{{ kubernetes_server_url.stdout }}"
