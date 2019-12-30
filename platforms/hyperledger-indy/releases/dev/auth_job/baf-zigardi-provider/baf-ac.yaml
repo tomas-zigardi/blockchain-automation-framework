@@ -17,7 +17,7 @@ spec:
       namespace: baf-zigardi-provider-ns
     network:
       name: baf
-      kubernetes_url: 
+      kubernetes_url: https://10.3.8.5:6443
     image:
       name: baf-zigardi-provider
       repository: alpine:3.9.4

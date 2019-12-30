@@ -17,7 +17,7 @@ spec:
       namespace: baf-zigardi-provider-ns
     network:
       name: baf
-      kubernetes_url: 
+      kubernetes_url: https://10.3.8.5:6443
     image:
       name: baf-zigardi-provider
       repository: alpine:3.9.4
@@ -27,7 +27,7 @@ spec:
       identity: provider-steward-1
       admin_auth_path: kubernetes-baf-zigardi-provider-admin-auth
       policy: baf-zigardi-provider-provider-steward-1-ro
-      policy_content: path \"/kv/baf-zigardi-provider/stewards/provider-steward-1/*\" [ \"read\", \"list\" ]
+      policy_content: path \"/kv/baf-zigardi-provider/stewards/provider-steward-1/*\" { capabilities = [ \"read\", \"list\" ] }
       auth_path: kubernetes-baf-zigardi-provider-provider-steward-1-auth
     account:
       admin_service: baf-zigardi-provider-admin-vault-auth
