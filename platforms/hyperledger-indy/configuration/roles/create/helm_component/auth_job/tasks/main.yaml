@@ -32,7 +32,7 @@
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/trustees/{{ identity_name }}/*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
-    kubernetes_server: kubernetes_server_url.stdout
+    kubernetes_server: "{{ kubernetes_server_url.stdout }}"
   loop: "{{ services.trustees }}"
   loop_control:
     loop_var: trusteeItem
