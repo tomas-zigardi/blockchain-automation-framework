@@ -14,7 +14,7 @@
 # This tasks gets the kubernetes server url
 - name: Get the kubernetes server url
   shell: |
-    cat {{ KUBERNETES_CONFIG_FILE }} | grep server: |  awk '{print $2}'
+    cat $KUBERNETES_CONFIG_FILE | grep server: |  awk '{print $2}'
   environment:
     KUBERNETES_CONFIG_FILE: "{{ kubernetes.config_file }}"
   register: kubernetes_server_url
