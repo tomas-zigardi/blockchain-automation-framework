@@ -11,6 +11,15 @@
     state: directory
 
 ##############################################################################################
+# This tasks gets the kubernetes server url
+- name: Get the kubernetes server url
+  shell: |
+    cat {{ KUBERNETES_CONFIG_FILE }} | grep server: |  awk '{print $2}'
+  environment:
+    KUBERNETES_CONFIG_FILE: "{{ kubernetes.config_file }}"
+  register: kubernetes_server_url
+
+##############################################################################################
 # Generate vault policy and role for trustee
 - name: Trustee vault policy and role generating
   template:
@@ -23,6 +32,7 @@
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/trustees/{{ identity_name }}/*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
+    kubernetes_server: kubernetes_server_url.stdout
   loop: "{{ services.trustees }}"
   loop_control:
     loop_var: trusteeItem
@@ -41,6 +51,7 @@
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/stewards/{{ identity_name }}/*\""
     policy_capabilities: "[ \"read\", \"list\" ]"
+    kubernetes_server: kubernetes_server_url.stdout
   loop: "{{ services.stewards }}"
   loop_control:
     loop_var: stewardItem
@@ -58,7 +69,8 @@
     values_file: "{{ release_dir }}/{{ component_type }}/{{ component_name }}/{{ identity_name }}.yaml"
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/endorsers/{{ identity_name }}/*\""
-    policy_capabilities: "[ \"read\", \"list\" ]"
+    policy_capabilities: "{ capabilities = [ \"read\", \"list\" ] }"
+    kubernetes_server: kubernetes_server_url.stdout
   loop: "{{ services.endorsers }}"
   loop_control:
     loop_var: endorserItem
@@ -76,4 +88,5 @@
     values_file: "{{ release_dir }}/{{ component_type }}/{{ component_name }}/{{ identity_name }}.yaml"
     chart: "{{ chartName }}"
     policy_path: "path \"/kv/{{ organization }}/+/+/+/public*\""
-    policy_capabilities: "[ \"read\", \"list\" ]"
+    policy_capabilities: "{ capabilities = [ \"read\", \"list\" ] }"
+    kubernetes_server: kubernetes_server_url.stdout
