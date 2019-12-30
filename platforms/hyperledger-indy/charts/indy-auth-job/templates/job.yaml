@@ -37,93 +37,48 @@ spec:
                 fi
                };
 
-              echo 1;
-
-              #sleep 20000;
-
               export KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
               export KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
               
               export VAULT_SA_NAME=$(kubectl get sa {{ $.Values.account.service }} -n {{ $.Values.metadata.namespace }} -o jsonpath="{.secrets[*]['name']}");
               
               export SA_CA_CRT=$(kubectl get secret $VAULT_SA_NAME -n {{ $.Values.metadata.namespace }} -o jsonpath="{.data['ca\.crt']}" | base64 -d; echo);
-              
-              echo 2;
-              
+                            
               VAULT_TOKEN="$(curl --request POST --data '{"jwt": "'"$KUBE_TOKEN"'", "role": "rw"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.admin_auth_path }}/login | jq -r '.auth.client_token')";
               
-              echo 3;
-
               SA_CA_CRT_ONELINE=$(kubectl get secret $VAULT_SA_NAME -n {{ $.Values.metadata.namespace }} -o jsonpath="{.data['ca\.crt']}" | base64 -d | awk 'NF {sub(/\r/, ""); printf "%s\\n",$0;}');
-              
-              echo 4;
-              
+                            
+
+              # Create auth
 
               curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }};
               
-              echo 5;
-              #validateVaultResponse ${response_status};
-              
-              echo 6;
-
-
               curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"kubernetes_host": "{{ $.Values.network.kubernetes_url }}", "kubernetes_ca_cert": "'"$SA_CA_CRT_ONELINE"'", "token_reviewer_jwt": "'"$SA_JWT_TOKEN"'"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config;
 
-              echo 7;
-              #validateVaultResponse ${response_status};
-              
-              echo 8;
-
-              # Check 
+              # Check auth
 
               response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
 
-
-              
-              echo 9;
-
               validateVaultResponse ${response_status};
-              
-              echo 10;
-              
+
+
+              # Create policy
+
               curl  --header "X-Vault-Token: $VAULT_TOKEN" --request PUT --data '{"policy": "{{ $.Values.vault.policy_content }}"}' {{ $.Values.vault.address }}/v1/sys/policy/{{ $.Values.vault.policy }};
-              
-              echo 11;
-
-              #validateVaultResponse ${response_status};
-              
-              echo 12;
-
-
+                    
               # Check policy
 
               response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" {{ $.Values.vault.address }}/v1/sys/policy/{{ $.Values.vault.policy }});
 
-              echo 13;
-
-
               validateVaultResponse ${response_status};
-
-              echo 14;
             
+
+              # Create role
+
               curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"bound_service_account_names": "{{ $.Values.account.service }}","bound_service_account_namespaces": "{{ $.Values.metadata.namespace }}","policies": ["{{ $.Values.vault.policy }}"], "ttl": 180}' {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/role/{{ $.Values.account.role }};
-
-              echo 15;
-              
-              #validateVaultResponse ${response_status};
-
-              echo 16;
 
               # Check role
               
               response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/role/{{ $.Values.account.role }});
 
-              echo 17;
-
               validateVaultResponse ${response_status};
-
-              echo 18;
-
-              echo ${VAULT_TOKEN};
-              sleep 10000;
-    
