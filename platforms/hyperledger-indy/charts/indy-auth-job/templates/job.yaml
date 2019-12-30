@@ -39,7 +39,7 @@ spec:
 
               echo 1;
 
-              #sleep 20000;
+              sleep 20000;
 
               export KUBE_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token);
               export KUBE_CERT=$(cat /var/run/secrets/kubernetes.io/serviceaccount/ca.crt);
@@ -58,21 +58,22 @@ spec:
               
               echo 4;
               
+              sleep 5;
 
-              curl --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }}
-
-              #response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }});
+              response_status=$(curl -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"type": "kubernetes"}' {{ $.Values.vault.address }}/v1/sys/auth/{{ $.Values.vault.auth_path }});
               
               echo 5;
-
-              #validateVaultResponse ${response_status};
+              sleep 5;
+              validateVaultResponse ${response_status};
               
               echo 6;
 
+              sleep 5;
               
               response_status=$(curl  -s -o /dev/null -w "%{http_code}" --header "X-Vault-Token: $VAULT_TOKEN" --request POST --data '{"kubernetes_host": "{{ $.Values.network.kubernetes_url }}", "kubernetes_ca_cert": "'"$SA_CA_CRT_ONELINE"'", "token_reviewer_jwt": "'"$SA_JWT_TOKEN"'"}' -s -k {{ $.Values.vault.address }}/v1/auth/{{ $.Values.vault.auth_path }}/config);
-              echo 7;
 
+              echo 7;
+              sleep 5;
               validateVaultResponse ${response_status};
               
               echo 8;
