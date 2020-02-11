@@ -49,6 +49,22 @@
     loop: "{{ network['organizations'] }}"
     when: network.type == 'quorum'
 
+  # Generate Ambassador certificate for nodes
+  - name: "Create ambassador certificates for Nodes" 
+    include_role: 
+      name: create/certificates/ambassador
+    vars:
+      root_subject: "{{ network.config.subject }}"
+      cert_subject: "{{ network.config.subject | regex_replace(',', '/') }}"
+      services: "{{ item.services }}"
+      organisation: "{{ item.name | lower }}"
+      component_ns: "{{ item.name | lower }}-ns"
+      component_name: "{{ item.name | lower }}"
+      kubernetes: "{{ item.k8s }}"
+      vault: "{{ item.vault }}"
+    loop: "{{ network['organizations']}}"
+    when: network.type == 'quorum'
+
   # This role makes up the geth binary and place it in the bin directory
   - name: "Setup geth"
     include_role:
@@ -66,12 +82,61 @@
   # This role generates the crypto material for quorum network based on RAFT consensus and store it in vault
   - name: "Generate crypto material for RAFT consensus"
     include_role:
-      name: create/generate_crypto_raft
+      name: create/crypto/raft
     vars:
       component_name: "{{ item.name | lower }}"
-      component_ns: "{{ item.name | lower }}-net"
+      component_ns: "{{ item.name | lower }}-ns"
       vault: "{{ item.vault }}"
-      peer: "{{ item.services.peers[0] }}"
+      peers: "{{ item.services.peers }}"
+    loop: "{{ network['organizations'] }}"
+    when: network.type == 'quorum' and network.config.consensus == 'raft'
+
+  # This role makes up the istanbul binary and place it in the bin directory
+  - name: "Setup istanbul-tools"
+    include_role:
+      name: setup/istanbul
+    loop: "{{ network['organizations'] }}"
+    when: network.type == 'quorum' and network.config.consensus == 'ibft'
+
+  # This role generates the genesis.json and nodekey/enode for all orgs of the network
+  - name: "Generate genesis and nodekey/enode for the network"
+    include_role:
+      name: create/genesis_nodekey      
+    when: network.type == 'quorum' and network.config.consensus == 'ibft'
+
+  # This role generates the crypto material for quorum network based on ibft consensus and store it in vault
+  - name: "Generate crypto material for IBFT consensus"
+    include_role:
+      name: create/crypto/ibft
+    vars:
+      component_name: "{{ item.name | lower }}"
+      component_ns: "{{ item.name | lower }}-ns"
+      vault: "{{ item.vault }}"
+      peers: "{{ item.services.peers }}"
+    loop: "{{ network['organizations'] }}"
+    when: network.type == 'quorum' and network.config.consensus == 'ibft'
+
+  # This role generates the crypto material for quorum network based on tessera transaction manager and store it in vault
+  - name: "Generate crypto material for tessera transaction manager"
+    include_role:
+      name: create/crypto/tessera
+    vars:
+      component_name: "{{ item.name | lower }}"
+      component_ns: "{{ item.name | lower }}-ns"
+      vault: "{{ item.vault }}"
+      peers: "{{ item.services.peers }}"
+    loop: "{{ network['organizations'] }}"
+    when: network.type == 'quorum'
+
+  - name: "Generate crypto material for Constellation"
+    include_role:
+      name: create/crypto/constellation
+    vars:
+      component_name: "{{ item.name | lower}}"
+      component_ns: "{{ item.name | lower }}-ns"
+      vault: "{{ item.vault }}"
+      peers: "{{ item.services.peers }}"
+      version: "{{ network.config.tm_version }}"
     loop: "{{ network['organizations'] }}"
     when: network.type == 'quorum'
 

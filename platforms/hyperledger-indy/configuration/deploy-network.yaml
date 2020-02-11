@@ -6,6 +6,10 @@
   gather_facts: no
   tasks:
   # ----------------------------------------------------------------------
+  # Create namespaces for organizations
+ - name: "Validating network.yaml"
+   include_role:
+     name: check/validation
 
   # Create namespaces for organizations
   - name: 'Create namespace'
@@ -148,6 +152,12 @@
     loop_control:
       loop_var: organizationItem
     when: network['type'] == 'indy' and organizationItem.type == 'peer'
+
+  # Create and deploy Identities
+  - name: 'Create Endorser Identities'
+    include_role:
+      name: setup/endorsers
+    when: network['type'] == 'indy'
 
   # delete build directory
   - name: Remove build directory
